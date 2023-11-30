@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Desafio CG2</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+      height: 100vh;
+      background-color: #f5f5f5;
+    }
+
+    h1, h2, p {
+      margin-bottom: 10px;
+    }
+
+    .exam-button {
+      cursor: pointer;
+      display: inline-block;
+      padding: 10px 20px;
+      margin: 5px;
+      border: none;
+      background-color: #007bff;
+      color: #fff;
+      font-size: 16px;
+      border-radius: 4px;
+      width: 400px; /* Defina a largura desejada para todos os botões */
+    }
+
+    .exam-button:hover {
+      background-color: #0056b3;
+    }
+
+    .exam-button.disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    #password-input {
+      margin-bottom: 10px;
+    }
+
+    #game-container {
+      display: none;
+      overflow-y: auto;
+      max-height: 70vh;
+    }
+
+.scroll-horizontal {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+#exams-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
+}
+
+        footer {
+  text-align: center;
+  background-color: #f0f0f0;
+  padding: 10px;
+}
+
+footer p {
+  margin: 5px;
+  font-size: 10px;
+  color: #888;
+}
+
+
+  </style>
+</head>
+<body>
+  <div id="password-container">
+    <h1>Desafio CG2</h1>
+    <input type="password" id="password-input" placeholder="Digite a senha">
+    <button id="password-button">Enviar</button>
+  </div>
+
+  <div id="game-container">
+
+    <h2>Caso Clínico</h2>
+    <p>A.F.G., filha mais velha de um casal, atualmente com 16 anos, está há mais de um ano sem menstruar. Ela reporta que sua menarca foi aos 14 anos. Ao exame clínico, nota-se que a probanda apresenta características de desenvolvimento da puberdade, porém, apresenta mamas pequenas e pelos pubianos e axilares esparsos. Sua genitália externa é normal e ela não apresenta nenhuma anomalia congênita. A ginecologista que atendera a paciente previamente, solicitou exames de imagem que revelaram que a probanda apresenta um útero hipoplásico, trompas normais, mas gônadas em formato de feixe. Por causa destes resultados, a ginecologista encaminhou a probanda para um geneticista. Ela tem mais uma irmã, com 12 anos que ainda não apresentou sua menarca, mas por sugestão da ginecologista, também foram realizados exames de imagem, que revelaram que a irmã também apresenta gônadas em forma de feixe.</p>
+
+    <h2>Exames Disponíveis</h2>
+    <p>Total de dinheiro disponível: <span id="total-money">40200</span></p>
+    <div id="exams-list">
+      <button class="exam-button" data-cost="3000" onclick="requestExam(this, '<strong>Resultado array-CGH probanda:</strong> Não foram detectadas alterações de número de cópias no genoma do indivíduo investigado compatíveis com a hipótese diagnóstica. Foram detectados sinais para sondas dos cromossomos X e Y, em cópia única, resultado, portanto, compatível com cariótipo XY.')">Array-CGH: investigação de perdas e ganhos cromossômicos submicroscópicos pela técnica de Microarray-Comparative Genomic Hybridization <br> Paciente: II-1 (probanda) <br> (Custo: R$3000)</button>
+      <button class="exam-button" data-cost="3000" onclick="requestExam(this, '<strong>Resultado array-CGH mãe:</strong> Não foram detectadas alterações de número de cópias no genoma do paciente investigado.')">Array-CGH: investigação de perdas e ganhos cromossômicos submicroscópicos pela técnica de Microarray-Comparative Genomic Hybridization <br> Paciente: I-1 (mãe) <br> (Custo: R$3000)</button>
+      <button class="exam-button" data-cost="3000" onclick="requestExam(this, '<strong>Resultado array-CGH pai:</strong> Não foram detectadas alterações de número de cópias no genoma do paciente investigado.')">Array-CGH: investigação de perdas e ganhos cromossômicos submicroscópicos pela técnica de Microarray-Comparative Genomic Hybridization <br> Paciente: I-2 (pai) <br> (Custo: R$3000)</button>
+      <button class="exam-button" data-cost="3000" onclick="requestExam(this, '<strong>Resultado array-CGH II-3 irmã probanda:</strong> Não foram detectadas alterações de número de cópias no genoma do paciente investigado.')">Array-CGH: investigação de perdas e ganhos cromossômicos submicroscópicos pela técnica de Microarray-Comparative Genomic Hybridization <br> Paciente: II-3 (irmã probanda) <br> (Custo: R$3000)</button>
+      <button class="exam-button" data-cost="3000" onclick="requestExam(this, '<strong>Resultado array-CGH II-2 irmã probanda:</strong> Não foram detectadas alterações de número de cópias no genoma do paciente investigado compatíveis com a hipótese diagnóstica. Foram detectados sinais para sondas dos cromossomos X e Y, em cópia única, resultado, portanto, compatível com cariótipo XY.')">Array-CGH: investigação de perdas e ganhos cromossômicos submicroscópicos pela técnica de Microarray-Comparative Genomic Hybridization <br> Paciente: II-2 (irmã probanda) <br> (Custo: R$3000)</button>
+      <button class="exam-button" data-cost="600" onclick="requestExamWithPassword(this, 'MAP3K1', '<strong>Resultado Sanger probanda:</strong> Foram investigados por sequenciamento Sanger os 19 exons do gene MAP3K1. Foi detectada a variante NM_005921.2:c.566T>G em heterozigose. Esta variante é descrita como patogênica no banco de dados ClinVar. Em vista da suspeita clínica do caso, esta variante pode ser apontada como como patogênica e responsável pelo quadro do paciente segundo os critérios da ACMG.')">Investigação de variantes por sequenciamento Sanger <br>  Paciente: II-1 (probanda) <br> (Custo: R$600)</button>
+      <button class="exam-button" data-cost="600" onclick="requestExamWithPassword(this, 'MAP3K1', '<strong>Resultado Sanger mãe:</strong> Foram investigados por sequenciamento Sanger os 19 exons do gene MAP3K1. Foi detectada a variante NM_005921.2:c.566T>G em heterozigose. Esta variante é descrita como patogênica no banco de dados ClinVar.')">Investigação de variantes por sequenciamento Sanger <br> Paciente: I-1 (mãe) <br> (Custo: R$600)</button>
+      <button class="exam-button" data-cost="600" onclick="requestExamWithPassword(this, 'MAP3K1', '<strong>Resultado Sanger pai:</strong> Foram investigados por sequenciamento Sanger os 19 exons do gene MAP3K1. Não foram detectadas variantes classificadas como patogênicas no paciente.')">Investigação de variantes por sequenciamento Sanger <br> Paciente: I-2 (pai) <br> (Custo: R$600)</button>
+      <button class="exam-button" data-cost="600" onclick="requestExamWithPassword(this, 'MAP3K1', '<strong>Resultado Sanger II-3 irmã probanda:</strong> Foram investigados por sequenciamento Sanger os 19 exons do gene MAP3K1. Foi detectada a variante NM_005921.2:c.566T>G em heterozigose. Esta variante é descrita como patogênica no banco de dados ClinVar. Em vista da suspeita clínica do caso, esta variante pode ser apontada como como patogênica e responsável pelo quadro do paciente segundo os critérios da ACMG.')">Investigação de variantes por sequenciamento Sanger <br>  Paciente: II-3 (irmã probanda) <br> (Custo: R$600)</button>
+      <button class="exam-button" data-cost="600" onclick="requestExamWithPassword(this, 'MAP3K1', '<strong>Resultado Sanger II-2 irmã probanda:</strong> Foram investigados por sequenciamento Sanger os 19 exons do gene MAP3K1. Foi detectada a variante NM_005921.2:c.566T>G em heterozigose. Esta variante é descrita como patogênica no banco de dados ClinVar. Em vista da suspeita clínica do caso, esta variante pode ser apontada como como patogênica e responsável pelo quadro do paciente segundo os critérios da ACMG.')">Investigação de variantes por sequenciamento Sanger <br>  Paciente: II-2 (irmã probanda) <br> (Custo: R$600)</button>
+      <button class="exam-button" data-cost="3000" onclick="requestExam(this, '<strong>Resultado array-SNP probanda:</strong> Foram genotipados 500 mil polimorfismos de base única por meio da técnica de microarray. Não foram detectadas alterações de número de cópias no genoma do paciente investigado compatíveis com a hipótese diagnóstica. Foram detectados sinais para sondas dos cromossomos X e Y, em cópia única, resultado, portanto, compatível com cariótipo XY.')">Array-SNP: Genotipagem de polimorfismos de base única pela técnica de microarray-Single Nucleotide Polymorfism <br> Paciente: II-1 (probanda) <br> (Custo: R$3000)</button>
+      <button class="exam-button" data-cost="3000" onclick="requestExam(this, '<strong>Resultado array-SNP mãe:</strong> Foram genotipados 500 mil polimorfismos de base única por meio da técnica de microarray. Não foram detectadas alterações cromossômicas no paciente.')">Array-SNP: Genotipagem de polimorfismos de base única pela técnica de microarray-Single Nucleotide Polymorfism <br> Paciente: I-1 (mãe) <br> (Custo: R$3000)</button>
+      <button class="exam-button" data-cost="3000" onclick="requestExam(this, '<strong>Resultado array-SNP pai:</strong> Foram genotipados 500 mil polimorfismos de base única por meio da técnica de microarray. Não foram detectadas alterações cromossômicas no paciente compatíveis com a hipótese diagnóstica.')">Array-SNP: Genotipagem de polimorfismos de base única pela técnica de microarray-Single Nucleotide Polymorfism <br> Paciente: I-2 (pai) <br> (Custo: R$3000)</button>
+      <button class="exam-button" data-cost="3000" onclick="requestExam(this, '<strong>Resultado array-SNP II-3 irmã probanda:</strong> Foram genotipados 500 mil polimorfismos de base única por meio da técnica de microarray. Não foram detectadas alterações cromossômicas no paciente.')">Array-SNP: Genotipagem de polimorfismos de base única pela técnica de microarray-Single Nucleotide Polymorfism <br> Paciente: II-3 (irmã probanda) <br> (Custo: R$3000)</button>
+      <button class="exam-button" data-cost="3000" onclick="requestExam(this, '<strong>Resultado array-SNP II-2 irmã probanda:</strong> Foram genotipados 500 mil polimorfismos de base única por meio da técnica de microarray. Não foram detectadas alterações de número de cópias no genoma do paciente investigado compatíveis com a hipótese diagnóstica. Foram detectados sinais para sondas dos cromossomos X e Y, em cópia única, resultado, portanto, compatível com cariótipo XY.')">Array-SNP: Genotipagem de polimorfismos de base única pela técnica de microarray-Single Nucleotide Polymorfism <br> Paciente: II-2 (irmã probanda) <br> (Custo: R$3000)</button>
+      <button class="exam-button" data-cost="600" onclick="requestExam(this, '<strong>Resultado cariótipo com bandamento G probanda:</strong> Material estudado: metáfases de linfócitos isolados a partir de sangue periférico <br> Resultado cariótipo probanda: foram analisadas 20 células de sangue periférico do paciente. Cariótipo 46,XY. Este resultado foi encontrado tanto na amostra inicial quanto na amostra de recoleta solicitada.')">Cariótipo com bandamento G <br> Paciente: II-1 (probanda) <br> (Custo: R$600)</button>
+      <button class="exam-button" data-cost="600" onclick="requestExam(this, '<strong>Resultado cariótipo com bandamento G mãe:</strong> Material estudado: metáfases de linfócitos isolados a partir de sangue periférico <br> Resultado cariótipo mãe: foram analisadas 20 células de sangue periférico do paciente. Cariótipo 46,XX.')">Cariótipo com bandamento G <br> Paciente: I-1 (mãe) <br> (Custo: R$600)</button>
+      <button class="exam-button" data-cost="600" onclick="requestExam(this, '<strong>Resultado cariótipo com bandamento G pai:</strong> Material estudado: metáfases de linfócitos isolados a partir de sangue periférico <br> Resultado cariótipo pai: foram analisadas 20 células de sangue periférico do paciente. Cariótipo 46,XY.')">Cariótipo com bandamento G <br> Paciente: I-2 (pai) <br> (Custo: R$600)</button>
+      <button class="exam-button" data-cost="600" onclick="requestExam(this, '<strong>Resultado cariótipo com bandamento G II-3 irmã probanda:</strong> Material estudado: metáfases de linfócitos isolados a partir de sangue periférico <br> Resultado cariótipo II-3 irmã probanda: foram analisadas 20 células de sangue periférico do paciente. Cariótipo 46,XX.')">Cariótipo com bandamento G <br> Paciente: II-3 (probanda) <br> (Custo: R$600)</button>
+      <button class="exam-button" data-cost="600" onclick="requestExam(this, '<strong>Resultado cariótipo com bandamento G II-2 irmã probanda:</strong> Material estudado: metáfases de linfócitos isolados a partir de sangue periférico <br> Resultado cariótipo II-2 irmã probanda: foram analisadas 20 células de sangue periférico do paciente. Cariótipo 46,XY. Este resultado foi encontrado tanto na amostra inicial quanto na amostra de recoleta solicitada.')">Cariótipo com bandamento G <br> Paciente: II-2 (probanda) <br> (Custo: R$600)</button>
+      <button class="exam-button" data-cost="400" onclick="requestExam(this, '<strong>Resultado teste de paternidade:</strong> foram genotipados 16 marcadores STR no material do probando e dos supostos pais biológicos. O teste confirma que o probando é filho biológico dos progenitores testados com 99.9% de certeza.')">Investigação de paternidade <br> Paciente: II-1 (filho) <br> (Custo: R$400)</button>
+      <button class="exam-button" data-cost="600" onclick="requestExam(this, '<strong>Resultado FISH probanda:</strong> As sondas testadas para a região alvo solicitada revelaram a presença de duas cópias de tal região em localização cromossômica esperada. Assim, não há alterações de número de cópia ou alteração estrutural envolvendo a região em investigação.')">Fluorescent in situ hybridization (FISH) <br>  Paciente: II-1 (probanda) <br> (Custo: R$600)</button>
+      <button class="exam-button" data-cost="600" onclick="requestExam(this, '<strong>Resultado FISH mãe:</strong> As sondas testadas para a região alvo solicitada revelaram a presença de duas cópias de tal região em localização cromossômica esperada. Assim, não há alterações de número de cópia ou alteração estrutural envolvendo a região em investigação.')">Fluorescent in situ hybridization (FISH) <br>  Paciente: I-1 (mãe) <br> (Custo: R$600)</button>
+      <button class="exam-button" data-cost="600" onclick="requestExam(this, '<strong>Resultado FISH pai:</strong> As sondas testadas para a região alvo solicitada revelaram a presença de duas cópias de tal região em localização cromossômica esperada. Assim, não há alterações de número de cópia ou alteração estrutural envolvendo a região em investigação.')">Fluorescent in situ hybridization (FISH) <br>  Paciente: I-2 (pai) <br> (Custo: R$600)</button>
+      <button class="exam-button" data-cost="600" onclick="requestExam(this, '<strong>Resultado FISH II-3 (irmã probanda):</strong> As sondas testadas para a região alvo solicitada revelaram a presença de duas cópias de tal região em localização cromossômica esperada. Assim, não há alterações de número de cópia ou alteração estrutural envolvendo a região em investigação.')">Fluorescent in situ hybridization (FISH) <br>  Paciente: II-3 (irmã probanda) <br> (Custo: R$600)</button>
+      <button class="exam-button" data-cost="600" onclick="requestExam(this, '<strong>Resultado FISH II-2 (irmã probanda):</strong> As sondas testadas para a região alvo solicitada revelaram a presença de duas cópias de tal região em localização cromossômica esperada. Assim, não há alterações de número de cópia ou alteração estrutural envolvendo a região em investigação.')">Fluorescent in situ hybridization (FISH) <br>  Paciente: II-2 (irmã probanda) <br> (Custo: R$600)</button>
+      <button class="exam-button" data-cost="400" onclick="requestExam(this, '<strong>Resultado investigação de paternidade:</strong> foram genotipados 16 marcadores STR no material do probando e dos supostos pais biológicos. O teste confirma que o probando é filho biológico dos progenitores testados com 99.9% de certeza.')">Investigação de paternidade <br>  Paciente: II-1 (probanda) <br> (Custo: R$400)</button>
+      </button>
+    </div>
+
+    <h2>Resultados</h2>
+    <div id="results"></div>
+
+    <p id="timestamp"></p>
+        <p <footer>
+  <p><i>Criado por: Profa. Dra. Karina Griesi e Carolina Souza Sanchez</i></p>
+  <p><i>Versão: 1.0</i></p>
+</footer>
+  </div>
+
+  <script>
+    document.getElementById("password-button").addEventListener("click", function() {
+      var passwordInput = document.getElementById("password-input").value;
+      var correctPassword = "G3nom@mrpb"; // Defina a senha de abertura do programa aqui
+
+      if (passwordInput === correctPassword) {
+        document.getElementById("password-container").style.display = "none";
+        document.getElementById("game-container").style.display = "block";
+        showTimestamp();
+      } else {
+        alert("Senha incorreta. Tente novamente.");
+      }
+    });
+
+    function requestExam(button, result) {
+      if (button.classList.contains("disabled")) {
+        return;
+      }
+
+      var cost = parseInt(button.getAttribute("data-cost"));
+      var totalMoneyElement = document.getElementById("total-money");
+      var totalMoney = parseInt(totalMoneyElement.innerText);
+
+      if (totalMoney >= cost) {
+        totalMoney -= cost;
+        totalMoneyElement.innerText = totalMoney;
+
+        var resultsElement = document.getElementById("results");
+        resultsElement.innerHTML += "<p>" + result + "</p>";
+
+        button.classList.add("disabled");
+      }
+    }
+
+    function requestExamWithPassword(button, password, result) {
+      var passwordInput = prompt("Qual é o gene de interesse? (digite tudo em maiscúlo)");
+      if (passwordInput === password) {
+        requestExam(button, result);
+      } else {
+        alert("Foi investigado por sequenciamento Sanger os exons do gene solicitado. Não foram detectadas variantes no gene de interesse clínico para o caso.");
+      }
+    }
+
+    // Função para exibir o timestamp
+    function showTimestamp() {
+      var timestampElement = document.getElementById("timestamp");
+      var now = new Date();
+      var timestamp = "Programa aberto em: " + now.toLocaleString();
+      timestampElement.innerText = timestamp;
+    }
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
